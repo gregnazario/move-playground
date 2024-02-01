@@ -1,0 +1,15 @@
+[package]
+name = "ShrimpCoin"
+version = "1.2.1"
+authors = ["flippy", "fischer"]
+
+[addresses]
+shrimp_address = "_"
+
+[dev-addresses]
+shrimp_address = "0x121212"
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
