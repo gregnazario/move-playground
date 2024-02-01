@@ -23,10 +23,12 @@ module shrimp_address::shrimp {
     const E_ALREADY_INITIALIZED: u64 = 3;
     /// Shrimp not initialized
     const E_NOT_INITIALIZED: u64 = 4;
+    /// Number of addresses doesn't match amounts
+    const E_ADDRESS_COUNT_NOT_MATCH_AMOUNT_COUNT: u64 = 5;
 
     struct ShrimpCoin {}
 
-    //#[resource_group_member(group = aptos_framework::object::ObjectGroup)]
+    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
     /// Controls the Shrimp token
     struct ShrimpController has key {
         /// Extend ref is to make updates if pieces are missing
@@ -37,7 +39,7 @@ module shrimp_address::shrimp {
         freeze: FreezeCapability<ShrimpCoin>
     }
 
-    //#[resource_group_member(group = aptos_framework::object::ObjectGroup)]
+    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
     /// Note that this is not parallel.  If there were a lot of mints, or burns this would slow down performance
     /// But, since these are happening manually, it will likely not be the case.
     struct ShrimpMetrics has key {
@@ -99,21 +101,6 @@ module shrimp_address::shrimp {
         });
 
         move_to(&object_signer, shrimp_controller);
-    }
-
-    /// Only for migration, when deployed the first time, this isn't needed
-    entry fun add_metrics(caller: &signer) acquires ShrimpController {
-        // Only publisher can call this function
-        assert!(@shrimp_address == signer::address_of(caller), E_NOT_CREATOR);
-
-        let object_address = object_address();
-        let controller = borrow_global<ShrimpController>(object_address);
-        let object_signer = object::generate_signer_for_extending(&controller.extend_ref);
-
-        move_to(&object_signer, ShrimpMetrics {
-            total_supply: SUPPLY,
-            total_burnt: 0,
-        })
     }
 
     /// Burn coins in someone else's account
@@ -196,14 +183,33 @@ module shrimp_address::shrimp {
     }
 
 
-    /// Airdrop shrimp to an account from the supply
-    entry fun airdrop_many(caller: &signer, accounts: vector<address>, amount: u64) acquires ShrimpController {
+    /// Airdrop shrimp to multiple accounts from the supply, lists must match in length
+    entry fun airdrop_many(caller: &signer, accounts: vector<address>, amounts: vector<u64>) acquires ShrimpController {
+        let object_address = object_address();
+        check_permission(caller, object_address);
+
+        // Ensure lists are same length
+        let length = vector::length(&accounts);
+        assert!(length == vector::length(&amounts), E_ADDRESS_COUNT_NOT_MATCH_AMOUNT_COUNT);
+
+        let controller = borrow_global<ShrimpController>(object_address);
+        let shrimp_signer = object::generate_signer_for_extending(&controller.extend_ref);
+
+        // Airdrop to each
+        for (i in 0..length) {
+            airdrop_tokens(&shrimp_signer, *vector::borrow(&accounts, i), *vector::borrow(&amounts, i));
+        }
+    }
+
+    /// Airdrop shrimp to accounts with the same amount each
+    entry fun airdrop_many_same(caller: &signer, accounts: vector<address>, amount: u64) acquires ShrimpController {
         let object_address = object_address();
         check_permission(caller, object_address);
 
         let controller = borrow_global<ShrimpController>(object_address);
         let shrimp_signer = object::generate_signer_for_extending(&controller.extend_ref);
 
+        // Airdrop to each
         vector::for_each(accounts, |account| {
             airdrop_tokens(&shrimp_signer, account, amount);
         });
