@@ -1,0 +1,53 @@
+---
+compiled_package_info:
+  package_name: MysteryBox
+  address_alias_instantiation:
+    Extensions: "0000000000000000000000000000000000000000000000000000000000000001"
+    aptos_framework: "0000000000000000000000000000000000000000000000000000000000000001"
+    aptos_std: "0000000000000000000000000000000000000000000000000000000000000001"
+    aptos_token: "0000000000000000000000000000000000000000000000000000000000000003"
+    aptos_token_objects: "0000000000000000000000000000000000000000000000000000000000000004"
+    core_resources: 000000000000000000000000000000000000000000000000000000000a550c18
+    mystery_addr: b98022721f97da65950435386a5209be2fc54bed5f12fc8ea0a1c3d0c76f562f
+    std: "0000000000000000000000000000000000000000000000000000000000000001"
+    vm: "0000000000000000000000000000000000000000000000000000000000000000"
+    vm_reserved: "0000000000000000000000000000000000000000000000000000000000000000"
+  source_digest: 6E46CA0F61E108755D52F487DF3D0DC44753FCA0377C319C344FD8EDA300E9FB
+  build_flags:
+    dev_mode: false
+    test_mode: false
+    generate_docs: false
+    generate_abis: false
+    generate_move_model: true
+    full_model_generation: false
+    install_dir: ~
+    force_recompilation: false
+    additional_named_addresses:
+      mystery_addr: b98022721f97da65950435386a5209be2fc54bed5f12fc8ea0a1c3d0c76f562f
+    architecture: ~
+    fetch_deps_only: false
+    skip_fetch_latest_git_deps: true
+    compiler_config:
+      bytecode_version: ~
+      known_attributes:
+        - bytecode_instruction
+        - deprecated
+        - event
+        - expected_failure
+        - legacy_entry_fun
+        - native_interface
+        - randomness
+        - resource_group
+        - resource_group_member
+        - test
+        - test_only
+        - verify_only
+        - view
+      skip_attribute_checks: false
+      compiler_version: ~
+dependencies:
+  - AptosFramework
+  - AptosStdlib
+  - AptosToken
+  - AptosTokenObjects
+  - MoveStdlib
