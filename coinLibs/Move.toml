@@ -1,0 +1,17 @@
+[package]
+name = "Coin Coalesece"
+version = "1.0.0"
+authors = []
+
+[addresses]
+coin_lib_addr = "_"
+
+[dev-addresses]
+coin_lib_addr = "0xBEEF"
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-framework.git"
+rev = "mainnet"
+subdir = "aptos-framework"
+
+[dev-dependencies]
