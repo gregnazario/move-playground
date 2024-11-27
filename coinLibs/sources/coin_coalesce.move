@@ -1,4 +1,7 @@
-module coin_lib_addr::coin_coalesce {
+/// Note this package is immutable
+///
+/// Please look at the code below and verify that it is what you expected.
+module coin_lib_addr::coin_coalesce_v1 {
 
     use std::option;
     use std::signer;

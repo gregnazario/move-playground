@@ -1,7 +1,8 @@
 [package]
-name = "Coin Coalesece"
+name = "Coin Coalesece V1"
 version = "1.0.0"
 authors = []
+upgrade_policy = "immutable"
 
 [addresses]
 coin_lib_addr = "_"
